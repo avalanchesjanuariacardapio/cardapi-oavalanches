@@ -31,9 +31,30 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
       overflow-x: hidden;
+      transition: all 0.3s ease; /* Transição suave para o modo fechado */
     }
 
     .app { max-width: 500px; margin: 0 auto; padding: 16px; padding-bottom: 100px; min-height: 100vh; }
+
+    /* --- ESTILO DE LOJA FECHADA (NOVO) --- */
+    /* Quando o body tiver a classe .closed, aplica isso nos elementos abaixo */
+    body.closed .sticky-controls,
+    body.closed .menu-list,
+    body.closed .cartbar,
+    body.closed #cartPage,
+    body.closed #modal {
+      opacity: 0.5;               /* Deixa meio apagado */
+      filter: grayscale(100%);    /* Tira a cor (preto e branco) */
+      pointer-events: none;       /* BLOQUEIA TODOS OS CLIQUES */
+      user-select: none;
+    }
+    
+    /* Garante que o cabeçalho fique normal */
+    body.closed .topbar {
+      filter: none;
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     /* --- NOTIFICAÇÕES (TOAST) --- */
     #toast-container {
@@ -342,9 +363,10 @@
 
       <input id="clientName" class="clean-input" placeholder="Seu Nome *">
       
-      <input id="clientAddress" class="clean-input" placeholder="Rua e Bairro (pelo Mapa) *">
-      
-      <input id="houseNumber" class="clean-input" placeholder="Número da Casa *" type="number" inputmode="numeric">
+      <div class="addr-row">
+        <input id="clientAddress" class="clean-input addr-grow" placeholder="Rua e Bairro (pelo Mapa) *">
+        <input id="houseNumber" class="clean-input addr-fixed" placeholder="Nº *" type="number" inputmode="numeric">
+      </div>
       
       <div class="section-title">💳 Pagamento</div>
       <div class="pay-list">
@@ -436,7 +458,7 @@
   </div>
 
   <script>
-    /* CONFIG */
+    /* DADOS */
     const CONFIG = {
       phone: '5534984405375',
       fee: 4.99,
@@ -444,7 +466,7 @@
       telegramToken: atob('ODUxNTIwODQwOTpBQUdSQU1ESFlORmdHdTFlWE9vWS10MU4wbHJDOXFtMGFpUQ=='),
       telegramChatId: atob('NjcwMDY3MDMzOA=='),
       pixKey: '14421d15-c771-4ab9-8e7f-fd69e987af1a',
-      pixName: 'AVALANCHES JANUARIA',
+      pixName: 'AVALANCHES JANUARIA', 
       pixCity: 'RIO DE JANEIRO'
     };
 
@@ -503,7 +525,7 @@
       }, 3000);
     }
 
-    // CHECK STORE
+    // CHECK STORE - BLOQUEIO DE INTERAÇÃO
     function checkOpenStatus() {
         const now = new Date();
         const day = now.getDay(); 
@@ -524,18 +546,22 @@
             if (effectiveMins >= 1140 && effectiveMins <= 1590) isOpen = true; // 19:00 - 02:30
         }
         const badge = document.getElementById('storeStatus');
+        
+        // APLICA O BLOQUEIO NA PÁGINA
         if(isOpen) {
             badge.innerHTML = '<span class="status-dot"></span> Aberto Agora';
             badge.className = 'status-badge';
+            document.body.classList.remove('closed');
         } else {
             badge.innerHTML = '<span class="status-dot red"></span> Loja Fechada';
             badge.className = 'status-badge closed';
+            document.body.classList.add('closed');
         }
     }
     setInterval(checkOpenStatus, 60000);
     checkOpenStatus();
 
-    // INPUT VALIDATION LOGIC (VISUAL)
+    // INPUT VISUAL VALIDATION
     ['clientName', 'clientAddress', 'houseNumber'].forEach(id => {
        el(id).addEventListener('input', function() {
           if(this.value.trim() !== "") {
