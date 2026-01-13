@@ -36,7 +36,6 @@
 
     .topbar { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; padding: 20px; background: var(--card); border-radius: 24px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
     
-    /* CORREÇÃO DA LOGO AQUI: object-fit: cover garante que não distorça */
     .logo { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--accent); margin-bottom: 10px; object-fit: cover; }
     
     .brand h1 { margin: 0; font-size: 24px; }
@@ -188,13 +187,19 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const CONFIG = { phone: '5534984405375', fee: 4.99, pixKey: '14421d15-c771-4ab9-8e7f-fd69e987af1a' };
+    
+    // BANCO DE DADOS COMPLETO RESTAURADO
     const DB = [
-      {"id":"i_cq","cat":"hamburgueres","name":"Cachorro Quente na Chapa","desc":"Pão, salsicha, mortadela, mussarela, batata, milho, molho especial","price":7.0, "image":"cachoro quente na chapa.jpeg"},
+      {"id":"i_cq","cat":"hamburgueres","name":"Cachorro Quente","desc":"Pão, salsicha, mortadela, mussarela, batata, milho, molho","price":7.0, "image":"cachoro quente na chapa.jpeg"},
       {"id":"i_hb","cat":"hamburgueres","name":"Hambúrguer","desc":"Pão, carne, batata, alface, tomate, molho especial","price":12.0, "image":"logo.jpeg"},
-      {"id":"i_fb","cat":"hamburgueres","name":"Franburguer","desc":"Pão, frango desfiado, batata, alface, tomate, molho especial","price":13.0, "image":"logo.jpeg"},
-      {"id":"i_xb","cat":"hamburgueres","name":"X-Burguer","desc":"Pão, carne, mussarela, batata, milho, alface, tomate, molho especial","price":15.0, "image":"xburguer.jpeg"},
-      {"id":"i_xtudo","cat":"hamburgueres","name":"X-Tudo","desc":"Pão, carne, bacon, ovo, presunto, mussarela, calabresa, milho, batata, alface, tomate, molho especial","price":25.0, "image":"xtudo.jpeg"},
-      {"id":"i_av","cat":"hamburgueres","name":"Avalanches","desc":"Pão, carne, bacon, frango, ovo, presunto, mussarela, calabresa, cebola roxa, milho, batata, alface, tomate, molho especial","price":27.0, "image":"Avalanche.jpeg"},
+      {"id":"i_xb","cat":"hamburgueres","name":"X-Burguer","desc":"Pão, carne, mussarela, batata, milho, alface, tomate","price":15.0, "image":"xburguer.jpeg"},
+      {"id":"i_xs","cat":"hamburgueres","name":"X-Salada","desc":"Pão, carne, mussarela, presunto, alface, tomate, milho, batata","price":16.0, "image":"xburguer.jpeg"},
+      {"id":"i_xe","cat":"hamburgueres","name":"X-Egg","desc":"Pão, carne, mussarela, ovo, presunto, salada, batata","price":17.0, "image":"xburguer.jpeg"},
+      {"id":"i_xc","cat":"hamburgueres","name":"X-Calabresa","desc":"Pão, carne, mussarela, calabresa, salada, batata","price":18.0, "image":"xburguer.jpeg"},
+      {"id":"i_xba","cat":"hamburgueres","name":"X-Bacon","desc":"Pão, carne, mussarela, bacon, salada, batata","price":19.0, "image":"xburguer.jpeg"},
+      {"id":"i_fb","cat":"hamburgueres","name":"Franburguer","desc":"Pão, frango desfiado, mussarela, salada, batata, milho","price":18.0, "image":"logo.jpeg"},
+      {"id":"i_xtudo","cat":"hamburgueres","name":"X-Tudo","desc":"Pão, carne, bacon, ovo, presunto, mussarela, calabresa, milho, batata, salada","price":25.0, "image":"xtudo.jpeg"},
+      {"id":"i_av","cat":"hamburgueres","name":"Avalanches","desc":"Pão, carne, bacon, frango, ovo, presunto, mussarela, calabresa, cebola roxa, milho, batata, tudo","price":27.0, "image":"Avalanche.jpeg"},
       {"id":"b_coca2","cat":"bebidas","name":"Coca-Cola 2L","desc":"Garrafa 2 litros","price":15.0, "image":"coca-cola 2l.jpg"},
       {"id":"b_coca350","cat":"bebidas","name":"Coca-Cola Lata","desc":"350ml","price":5.5, "image":"coca-cola lata.jpg"},
       {"id":"a_carne","cat":"adicionais","name":"Carne","price":4.0},
@@ -297,7 +302,7 @@
       div.classList.add('selected'); el('cashChange').style.display = type === 'dinheiro' ? 'block' : 'none';
     };
 
-    // MAPA LEAFLET COM GPS FORÇADO (Mantido conforme solicitado)
+    // MAPA LEAFLET COM GPS FORÇADO
     function initMap(lat = -15.487, lon = -44.367) {
       if(map) { map.setView([lat, lon], 17); marker.setLatLng([lat, lon]); return; }
       map = L.map('map').setView([lat, lon], 17);
